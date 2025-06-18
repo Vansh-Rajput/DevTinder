@@ -1,0 +1,25 @@
+{
+  "name": "devtinder",
+  "version": "1.0.0",
+  "description": "tinder for devs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Vansh-Rajput/DevTinder.git"
+  },
+  "keywords": [
+    "dev",
+    "tinder",
+    "js",
+    "node"
+  ],
+  "author": "Vansh",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Vansh-Rajput/DevTinder/issues"
+  },
+  "homepage": "https://github.com/Vansh-Rajput/DevTinder#readme"
+}
