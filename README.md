@@ -31,3 +31,13 @@ Feature	app.use(path, handler)	app.all(path, handler)
 Route Matching -> ✅ Prefix-based (matches /path and anything after)	❌ Exact match (unless you manually add /*)
 HTTP Methods   ->	All methods	                                          All methods
 
+
+# JSON vs JS Object
+
+- json is used for data exhange through apis, data here is almost stored in string.
+- cant use any function,variables or comments.
+- use double quotes for all keys and values (mandatory)
+
+- used as data struc in js.
+- can use func,variables.
+- not mandatory to use "", used when members have spaces.

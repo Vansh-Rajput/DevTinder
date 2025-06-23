@@ -17,21 +17,78 @@ console.log("error in loading database")
 })
 
 
-app.post('/signup',async(req,res,next)=>{
-    const obj=new User({
-           first_name:'vansh',
-    last_name:'rajput',
-    age:20,
-    email:'v@gmail.com',
-    })
+//app.use(express.json()) is a built-in middleware function in Express.js.
+//It is used to parse incoming JSON request bodies and makes the parsed data available in req.body.
+ app.use(express.json());    
 
-await obj.save();
+
+ 
+
+ // POST DATA IN DB dynamically
+app.post('/signup',async(req,res,next)=>{
+    console.log(req.body);
+
+    // const obj=new User({         //create new instance out of model
+    //        first_name:'vansh',
+    // last_name:'rajput',
+    // age:20,
+    // email:'v@gmail.com',
+    // })
+
+const obj=new User(req.body);  //new way, provide the body in postman and use the express.json method,.....
+await obj.save();              //by using this method we could use body of postman itself for operations
 res.send('Done !!!')
 })
 
 
 
 
+// GET EMAIL OF USER using .find()
+app.get('/user',async(req,res,next)=>{
+     
+    const mail=req.body.email;
+
+try{
+    const data= await User.find({email:mail});      //data is in form of array    //to get all documents use ({})
+    if(data.length===0)
+        res.status(401).send("user not found");
+    else
+res.send(data);
+}
+catch(e){
+   res.status(401).send("something went wrong");
+}
+})
+
+
+// DELETE A USER BASE ON _ID
+app.delete('/user',async(req,res,next)=>{
+   const id=req.body.userid;
+
+   try{
+    await User.findByIdAndDelete(id);
+    res.send("deleted !!!")
+   }
+   catch(err){
+    res.status(401).send('something went wrong while deleting');
+   }
+})
+
+
+// UPDATE USER USING PATCH
+
+app.patch('/user',async(req,res,next)=>{
+   const id=req.body.userid;
+  const data=req.body;
+   try{
+await User.findByIdAndUpdate(id,data);
+
+    res.send("Updated !!!")
+   }
+   catch(err){
+    res.status(401).send('something went wrong while updating');
+   }
+})
 
 
 
