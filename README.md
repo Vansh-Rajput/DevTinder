@@ -47,3 +47,16 @@ HTTP Methods   ->	All methods	                                          All meth
 - a password hashing function used to keep our pass secure in DB, instead of storing password in plain text we keep hashed password.
 - salt refers to random data to represent our password, no. of salt rounds tell how many times our password and salt was procossed, more salt rounds more strong hashing but more time to compute.
 
+
+# JWT and Cookies
+- when we login, a jwt token is created wrapped inside a cookie, then we use it each time api request is made, server validates it and gives us service.
+
+- cookie act as a data carrier while jwt stores it.
+
+- app.use(cookieParser) is used to read cookies sent by client(browser) to the server.
+- res.cookie() means sending cookies from server to client
+- Browser stores the cookie and automatically includes it in future requests to the same server.
+- jwt.sign() is used for creating jwt tokens at server side, it has 2 parameters-- payload object and secret string, payload object means what info we want to keep hidden in our token.
+
+
+# _123 is the password where _ is first alphabet of name

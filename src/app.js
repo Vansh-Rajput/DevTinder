@@ -3,9 +3,11 @@ const {connectdb}=require('./config/database');        //import the cluster from
 
 const { User } = require('../models/user');
 const { validatesignup } = require('./utils/validation');
-const bcrypt=require('bcrypt')
+const bcrypt=require('bcrypt');
+const cookieParser = require('cookie-parser');
 
 const app=express();
+const jwt=require("jsonwebtoken");
 
 //first connect to db, then start accepting the api calls made to server...
 connectdb().
@@ -22,7 +24,7 @@ console.log("error in loading database")
 //It is used to parse incoming JSON request bodies and makes the parsed data available in req.body.
  app.use(express.json());    
 
-
+app.use(cookieParser()); 
  
 
  // POST DATA IN DB dynamically
@@ -65,7 +67,7 @@ app.get('/user',async(req,res,next)=>{
     const mail=req.body.email;
 
 try{
-    const data= await User.find({email:mail});      //data is in form of array    //to get all documents use ({})
+    const data= await User.find({email:mail});      //returns objects in form of array  //to get all documents use ({})
     if(data.length===0)
         res.status(401).send("user not found");
     else
@@ -119,32 +121,47 @@ await User.findByIdAndUpdate(id,data);
 })
 
 
+// LOGIN Api
 app.post('/login',async(req,res,next)=>{
-      
+
     try{
-        const {email,password}=req.body;
-       const info= await User.findOne({email:email});
-        
-       if(!info)
-        throw new Error('No user exists');
+    const {email,password}=req.body;
 
+    const info=await User.findOne({email:email});      //returns doc in form of js object {just 1 if multiple}
+   
+    if(!info)
+        throw new Error('user doesnt exists');
 
-     const ispass=await bcrypt.compare(password,info.password);   //use it if password is hashed only
-     console.log(ispass)
-    
-       if(!ispass)
-        res.send('invalid password');
-       
+    const ispass=await bcrypt.compare(password,info.password);
 
-         res.send('login successfull');
-    }
+    if(!ispass)
+        throw new Error('incorrect password')
 
-    catch(err){
-        res.status(401).send('Error : ' + err.message);
-    }
+    const jwttoken= jwt.sign({_id:info._id},"devtin123");   //creating jwt tokens
+    res.cookie("token",jwttoken);   
+    res.send("login successful");
+
+}
+
+catch(err){
+    res.status(401).send('Error: ' + err.message);
+}
+
 })
 
 
+// READING COOKIE
+app.get('/profile',(req,res,next)=>{
+    const cok=req.cookies;
+    console.log(cok);          //get the cookie token, the token of logged-in user will be now visible here
+
+    const {token}=cok;
+
+    const payload=jwt.verify(token,"devtin123");
+    const {_id}=payload;
+    console.log(_id)       //got the id back use as payload object
+    res.send('reading cookie')
+})
 
 
 
