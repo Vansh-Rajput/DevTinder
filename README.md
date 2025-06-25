@@ -41,3 +41,9 @@ HTTP Methods   ->	All methods	                                          All meth
 - used as data struc in js.
 - can use func,variables.
 - not mandatory to use "", used when members have spaces.
+
+
+# bcrypt
+- a password hashing function used to keep our pass secure in DB, instead of storing password in plain text we keep hashed password.
+- salt refers to random data to represent our password, no. of salt rounds tell how many times our password and salt was procossed, more salt rounds more strong hashing but more time to compute.
+
