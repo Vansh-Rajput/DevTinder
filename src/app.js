@@ -8,6 +8,7 @@ const cookieParser = require('cookie-parser');
 
 const app=express();
 const jwt=require("jsonwebtoken");
+const { Auth } = require('./middlewares/auth');
 
 //first connect to db, then start accepting the api calls made to server...
 connectdb().
@@ -79,18 +80,6 @@ catch(e){
 })
 
 
-// DELETE A USER BASE ON _ID
-app.delete('/user',async(req,res,next)=>{
-   const id=req.body.userid;
-
-   try{
-    await User.findByIdAndDelete(id);
-    res.send("deleted !!!")
-   }
-   catch(err){
-    res.status(401).send('something went wrong while deleting');
-   }
-})
 
 
 // UPDATE USER USING PATCH
@@ -151,19 +140,17 @@ catch(err){
 
 
 // READING COOKIE
-app.get('/profile',(req,res,next)=>{
-    const cok=req.cookies;
-    console.log(cok);          //get the cookie token, the token of logged-in user will be now visible here
+app.get('/profile',Auth,(req,res,next)=>{
 
-    const {token}=cok;
+    try{ 
+    res.send(req.detail)
+    }
 
-    const payload=jwt.verify(token,"devtin123");
-    const {_id}=payload;
-    console.log(_id)       //got the id back use as payload object
-    res.send('reading cookie')
+    catch(err){
+    res.status(401).send("Error : " + err.message);
+    }
+
 })
-
-
 
 
 

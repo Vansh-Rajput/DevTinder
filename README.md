@@ -12,7 +12,7 @@
 - we can also provide more then 1 handlers (req,res,next)=>{} in the method, but use res.send() in one of them only else it will error no matter what,
 - to switch to next handler, use next() method...
 
-
+- req is not just a normal variable — it's a special object created by Express for each incoming request, and Express passes it along the middleware chain. useful in passing information from middleware to app. api's..
 
 
 - req.query --> req.query is an object that contains query parameters sent in the URL after a ?
@@ -57,6 +57,11 @@ HTTP Methods   ->	All methods	                                          All meth
 - res.cookie() means sending cookies from server to client
 - Browser stores the cookie and automatically includes it in future requests to the same server.
 - jwt.sign() is used for creating jwt tokens at server side, it has 2 parameters-- payload object and secret string, payload object means what info we want to keep hidden in our token.
+- when we login and then again login with some other user crendential, the previous token will get replaced and we will see the latest user logged in inside '/profile' api
+
+
+# why your Auth middleware in auth.js is special?
+- if you add this middleware to any api, ex- app.use() , all() etc... ,then this api would only work if user is logged in....
 
 
 # _123 is the password where _ is first alphabet of name
