@@ -1,3 +1,46 @@
+# Devtinder API's
+
+-dividing our apis into routers using expressRouter, putting all the apis together is nota best practise
+
+ authRouter
+- post /login
+- post /signup
+- post /logout
+
+  profileRouter
+- get/profile/edit
+- patch/profile/edit
+- patch/profile/password
+  
+  connection req Router
+
+- post /request/send/:status/:userId      can use this dynamically where status is either ignored,interested
+things to consider in this case :-
+- duplicate requests again n again.
+- if a user sent u a req, you cannot send in return {considering u didnt responded the req of user initially}
+- sending req to person who doesnt exist in DB
+
+- post /request/review/accepted/:requestId
+- post /request/review/rejected/:requestId
+
+
+  userRouter
+- get /connections
+- get /requests/received
+
+
+
+# About GET,POST ETC...
+
+- POST, GET, etc., are just names — in the end, you as the developer can write any logic inside any route.
+  But there's an important catch:
+  In real-world systems, it's not just about code working — it's about following standards and expectations.
+
+- your team at production may find your code confusing if you would use any logic inside get,post...
+- firewalls treat get,post req differently, changing there behav might cause issues..
+
+
+
 # About Routes in Express
 - Avoid using '/' on top as it will over write all other routes if mentioned, it works like a wildcard....
 - use it at last, and provide rest of the unique routes first...
@@ -24,7 +67,10 @@ req.query = {
   location: 'delhi'
 }
 
+- const app=express() means that we have created a server instance, its like main control center for our backend
+ server, all api calls we made will be received by file which contains this express().....
 
+ 
 
 # difference in .use() and .all()
 Feature	app.use(path, handler)	app.all(path, handler)
@@ -48,6 +94,7 @@ HTTP Methods   ->	All methods	                                          All meth
 - salt refers to random data to represent our password, no. of salt rounds tell how many times our password and salt was procossed, more salt rounds more strong hashing but more time to compute.
 
 
+
 # JWT and Cookies
 - when we login, a jwt token is created wrapped inside a cookie, then we use it each time api request is made, server validates it and gives us service.
 
@@ -64,4 +111,11 @@ HTTP Methods   ->	All methods	                                          All meth
 - if you add this middleware to any api, ex- app.use() , all() etc... ,then this api would only work if user is logged in....
 
 
+
+# Ref in database
+- we can create reference from one table to another using "ref" keyword in our schemma.
+- by using populate we could display the fields of User table, but we dont want to display the whole object as it contains email,password or other personal details...
+
+
 # _123 is the password where _ is first alphabet of name
+
