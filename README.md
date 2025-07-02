@@ -26,9 +26,25 @@ things to consider in this case :-
 
   userRouter
 - get /connections
+- the connections that u will show would be either send or received by logged in user, so showing used fromuser or touser may give incorrect results, so check carefully, else loggedin user would be printed
+
 - get /requests/received
 
 
+- get/user/feed -> show others people cards, but with some constraints
+- constraints for cards :-
+- dont show your own card
+- NO connections {accepted, rejected}
+- already sent/received req from someone
+
+
+- PAGINATION
+- /feed?page=1&limit=10  .skip(0) & .limit(10)
+- /feed?page=2&limit=10  .skip(10) & .limit(10)
+- /feed?page=3&limit=10  .skip(20) & .limit(10)
+
+skip=(page no. -1 * limit)
+ 
 
 # About GET,POST ETC...
 
@@ -114,7 +130,16 @@ HTTP Methods   ->	All methods	                                          All meth
 
 # Ref in database
 - we can create reference from one table to another using "ref" keyword in our schemma.
+- .populate actually replaces field data with referenced data from other collection.
 - by using populate we could display the fields of User table, but we dont want to display the whole object as it contains email,password or other personal details...
+
+
+# $nin (not include), $ne (not equal)
+- both are helpful in nested queries..
+
+- Meaning: Match documents where the value of field is not in the specified array.
+
+- Match documents where the value of field is not equal to value.
 
 
 # _123 is the password where _ is first alphabet of name

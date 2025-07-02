@@ -12,7 +12,8 @@ const connectschema=new mongoose.Schema({
     },
     touserId:{
          type:mongoose.Schema.Types.ObjectId,
-          required:true
+          required:true,
+          ref:"User"
     },
     status:{
         type:String, 
