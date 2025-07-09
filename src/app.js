@@ -7,7 +7,7 @@ const { profileroute } = require('../routes/profile');
 const { requestroute } = require('../routes/requests');
 const { userroute } = require('../routes/userRoute');
 const app=express();            
-
+const cors=require('cors')
 
 
 //first connect to db, then start accepting the api calls made to server...
@@ -27,7 +27,12 @@ console.log("error in loading database")
 app.use(cookieParser()); 
  
 
-// we want our routes to always work
+// we want routes to always work
+app.use(cors({
+    origin:"http://localhost:5173",
+    credentials:true
+}))
+
 app.use('/',authroute);
 app.use('/',profileroute);
 app.use('/',requestroute);

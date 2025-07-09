@@ -27,9 +27,10 @@ profileroute.patch('/profile/edit',Auth,async(req,res,next)=>{
        if(!(isvalid(req.body)))
     throw new Error("changes not allowed")
 
-  await User.findByIdAndUpdate(req.detail._id,req.body);  //making sure we are dealing only with loggedin user
+       // this promise returns the old changes, to get new use:--
+ const user=await User.findByIdAndUpdate(req.detail._id,req.body,{new:true}); 
 
-  res.send("updated successfully");
+  res.send(user);
   
     }
 

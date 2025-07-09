@@ -13,6 +13,7 @@ const userschema=mongoose.Schema({
     },
     age:{
         type:Number,
+        required:true
     },
     email:{
         type:String,
@@ -35,6 +36,10 @@ const userschema=mongoose.Schema({
          values:["male","female","others"],
          message:'{VALUE} is invalid'
         }
+    },
+    about:{
+        type:String,
+        required:true,
     }
 },{timestamps:true});
 

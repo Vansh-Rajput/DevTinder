@@ -14,7 +14,7 @@ userroute.get('/user/requests',Auth,async(req,res,next)=>{
     const pending=await connection_model.find({ 
       touserId:loggedin._id,         // if touserId it will give received, fromuserId gives that user had send
       status:"interested"
-    }).populate("fromuserId",["first_name","last_name","photourl","age"])
+    }).populate("fromuserId",["first_name","last_name","photourl","age","email","about"])
 
      if(!pending || pending.length===0)     //since its an array, so length=0 means no request
         throw new Error("");
@@ -40,14 +40,14 @@ userroute.get('/user/connections',Auth,async(req,res,next)=>{
          {fromuserId:loggedin._id, status:"accepted"},
          {touserId:loggedin._id, status:"accepted"}
      ]
-    }).populate("touserId",["first_name","last_name","photourl","age"])
-    .populate("fromuserId",["first_name","last_name","photourl","age"]);
+    }).populate("touserId",["first_name","last_name","photourl","age","email","about"])
+    .populate("fromuserId",["first_name","last_name","photourl","age","email","about"]);
 
 
      if(!pending || pending.length===0)     //since its an array, so length=0 means no request
         throw new Error("no connections");
 
-        //array of objects
+        //array of objects, ensuring same logged in user is not returned...
           const data=pending.map((row)=>{
          if(row.fromuserId._id.toString() === loggedin._id.toString())
           return row.touserId
@@ -96,7 +96,7 @@ userroute.get('/user/feed',Auth,async(req,res,next)=>{
       {_id:{$nin : Array.from(hidedata)}},  //converting to array finally for comparing
       {_id:{$ne : loggedin._id}}
       ]
-    }).select("first_name last_name age gender photourl").skip(skipit).limit(limit);
+    }).select("first_name last_name age gender photourl about").skip(skipit).limit(limit);
 
        res.send(final)
 
@@ -106,6 +106,8 @@ userroute.get('/user/feed',Auth,async(req,res,next)=>{
          res.status(200).send(err.message);
     }
 })
+
+
 
 module.exports={
 userroute

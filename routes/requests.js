@@ -38,7 +38,7 @@ requestroute.post('/request/send/:status/:touserId',Auth,async(req,res,next)=>{
 
     await data.save();
 
-    res.send('connection request sent to Id : ' + touser);
+    res.send('connection '+state);
 }
 
 catch(err){
@@ -54,7 +54,7 @@ requestroute.post('/request/review/:status/:reqId',Auth,async(req,res,next)=>{
         const loggedin=req.detail;
         const {status,reqId}=req.params;
 
-         if(!["accepted","rejected"].includes(status))   //this is status from url
+         if(!["accepted","rejected","ignored"].includes(status))   //this is status from url
           throw new Error("invalid status")
 
         const requirements=await connection_model.findOne({
@@ -66,8 +66,8 @@ requestroute.post('/request/review/:status/:reqId',Auth,async(req,res,next)=>{
         if(!requirements)
             throw new Error("request doesnt exists");
 
-      const final = await connection_model.findByIdAndUpdate(reqId,{status:req.params.status});
-      await final.save();
+await connection_model.findByIdAndUpdate(reqId,{status:req.params.status},{new:true});
+   
 
       res.send(status+" the request");
     }
