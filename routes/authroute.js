@@ -26,7 +26,12 @@ authroute.post('/signup',async(req,res,next)=>{
                                      //by using this method we could use body of postman itself for operation
     
     await obj.save();      //add object to DB
-    res.send('Done !!!')
+    const info=await User.findOne({email:email});
+
+    const jwttoken= await info.getjwt();   //imp to take care of cookies in signup just like login
+    res.cookie("token",jwttoken); 
+    res.send(info)
+
         }
         catch(err){
             res.status(401).send('ERROR: '+ err.message);

@@ -39,7 +39,6 @@ const userschema=mongoose.Schema({
     },
     about:{
         type:String,
-        required:true,
     }
 },{timestamps:true});
 

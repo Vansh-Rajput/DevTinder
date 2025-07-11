@@ -7,7 +7,7 @@ const validatesignup=(req)=>{
 
     const {first_name,last_name,email,password,age}=req.body;
 
-    if(!first_name.length || !last_name)
+    if(!first_name.length || !last_name.length)
         throw new Error('write valid name'); 
 
     else if(!validator.isEmail(email))
