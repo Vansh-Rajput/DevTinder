@@ -8,6 +8,7 @@ const { requestroute } = require('../routes/requests');
 const { userroute } = require('../routes/userRoute');
 const app=express();            
 const cors=require('cors')
+require('dotenv').config()
 
 
 //first connect to db, then start accepting the api calls made to server...

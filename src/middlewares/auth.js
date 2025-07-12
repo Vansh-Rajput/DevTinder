@@ -15,7 +15,7 @@ const Auth =async(req,res,next)=>{
     if(!token)
         throw new Error('Token is invalid, please login first')
 
-  const payload=jwt.verify(token,"devtin123");   //got the id back use as payload object
+  const payload=jwt.verify(token,process.env.JWT_SECRET);   //got the id back use as payload object
 
   
   //add 1 more layer of security, what if user was banned or deleted just after our fetching of token?
