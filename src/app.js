@@ -6,16 +6,24 @@ const { authroute } = require('../routes/authroute');
 const { profileroute } = require('../routes/profile');
 const { requestroute } = require('../routes/requests');
 const { userroute } = require('../routes/userRoute');
+const http= require('http')
 const app=express();            
-const cors=require('cors')
+const cors=require('cors');
+const initialisesocket = require('./utils/socket');
 require('dotenv').config()
+
+
+//socket and socket.io
+
+const server=http.createServer(app);
+initialisesocket(server);
 
 
 //first connect to db, then start accepting the api calls made to server...
 connectdb().
 then(()=>{
     console.log("connected to database");
-    app.listen(3333,()=>console.log('server built'));   //best way to handle DB connection, ON your server
+    server.listen(3333,()=>console.log('server built'));   //best way to handle DB connection, ON your server
 }).                                                    //only when DB is initialised with data, else problem
 catch((err)=>{
 console.log("error in loading database")
@@ -38,6 +46,7 @@ app.use('/',authroute);
 app.use('/',profileroute);
 app.use('/',requestroute);
 app.use('/',userroute);
+
 
 
 // GET EMAIL OF USER using .find()

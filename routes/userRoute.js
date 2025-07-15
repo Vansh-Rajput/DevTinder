@@ -2,6 +2,7 @@ const express=require('express');
 const { User } = require('../models/user');
 const { Auth } = require('../src/middlewares/auth');
 const { connection_model } = require('../models/connectionREQ');
+const { Chat } = require('../models/chatsdb');
 
 const userroute=express.Router();
 
@@ -44,7 +45,7 @@ userroute.get('/user/connections',Auth,async(req,res,next)=>{
     .populate("fromuserId",["first_name","last_name","photourl","age","email","about"]);
 
 
-     if(!pending || pending.length===0)     //since its an array, so length=0 means no request
+     if(!pending || pending.length===0)     //since its an array
         throw new Error("no connections");
 
         //array of objects, ensuring same logged in user is not returned...
@@ -108,6 +109,34 @@ userroute.get('/user/feed',Auth,async(req,res,next)=>{
 })
 
 
+userroute.get("/main/chat/:userid",Auth,async(req,res)=>{
+    try{
+       const Id=req?.params?.userid;
+       const loggedinid=req?.detail?._id;
+       
+
+      // VERY IMPORTANT POPULATE, no need to use map, just give the nested path
+       let doc=await Chat.findOne({participants:{$all:[Id,loggedinid]}}).
+       populate({
+       path:'messages.senderid',
+       select:'first_name photourl'
+       })
+
+
+       if(!doc){
+        doc=new Chat({
+          participants:[loggedinid,Id],
+          messages:[]
+        })
+         await doc.save();
+       }
+
+        res.send(doc);
+    }
+    catch(err){
+
+    }
+})
 
 module.exports={
 userroute

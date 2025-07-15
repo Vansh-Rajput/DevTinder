@@ -132,15 +132,30 @@ HTTP Methods   ->	All methods	                                          All meth
 - we can create reference from one table to another using "ref" keyword in our schemma.
 - .populate actually replaces field data with referenced data from other collection.
 - by using populate we could display the fields of User table, but we dont want to display the whole object as it contains email,password or other personal details...
+- Mongoose does not know you're referring to the email field inside the User model. By default, .populate() always looks for _id. so its recommended to go with id instead of email,names etc.....
 
 
 # $nin (not include), $ne (not equal)
 - both are helpful in nested queries..
 
-- Meaning: Match documents where the value of field is not in the specified array.
+- Meaning: Match documents and objects where the value of field is not in the specified array.
 
 - Match documents where the value of field is not equal to value.
 
 
 # _123 is the password where _ is first alphabet of name
 
+
+# Setting Up Sockets.io
+- make a http server using express and use server.listen instead of app.listen.
+- create initializesocket function to setup socket.io.
+- now create socket event handlers inside io.on
+- use .emit to send msg and .on to receive them on backend
+
+- after we sent to details to backend through socket.emit in frontend, how will now backend send these details to target user?
+
+- now to display create array of objects and then use map to display all messages, you will receive every msg of sender and receiver through "msg received" handler in socket.js.....
+
+
+# other features to add in chats
+- online symbol for connection
