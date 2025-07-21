@@ -39,6 +39,10 @@ const userschema=mongoose.Schema({
     },
     about:{
         type:String,
+    },
+    ispremium:{
+     type:String,
+     default:"false"
     }
 },{timestamps:true});
 

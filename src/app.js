@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express=require('express');
 const {connectdb}=require('./config/database');        //import the cluster from database.js
 const { User } = require('../models/user');
@@ -10,7 +11,8 @@ const http= require('http')
 const app=express();            
 const cors=require('cors');
 const initialisesocket = require('./utils/socket');
-require('dotenv').config()
+const {paymentroute} = require('../routes/payment');
+
 
 
 //socket and socket.io
@@ -46,7 +48,7 @@ app.use('/',authroute);
 app.use('/',profileroute);
 app.use('/',requestroute);
 app.use('/',userroute);
-
+app.use('/',paymentroute);
 
 
 // GET EMAIL OF USER using .find()
