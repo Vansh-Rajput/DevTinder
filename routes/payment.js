@@ -2,6 +2,7 @@ const express=require('express');
 const { Auth } = require('../src/middlewares/auth');
 const instance = require('../src/utils/razorpay');
 const razormodel = require('../models/razormodel');
+const {validateWebhookSignature} = require('razorpay/dist/utils/razorpay-utils')
 const { User } = require('../models/user');
 const paymentroute=express.Router();
 
@@ -49,12 +50,12 @@ res.json({saved,key_id:process.env.RAZORPAY_KEY_ID});
 
 //TO CHECK THIS FEATURE, USE PORDUCTION, not localhost
 
-// WEBHOOK VALIDATION -- we used /api/ in webhook path already to take care of production as it contains /api
-paymentroute.post("/payment/webhook",Auth,async(req,res)=>{   
+//‼️WEBHOOK VALIDATION -- we used /api/ in webhook path already to take care of production as it contains /api
+paymentroute.post("/payment/webhook",async(req,res)=>{   // ‼️ dont use Auth here
                              
     try{
 
-      const webhookSignature=req.get("X-Razorpay-Signature")
+      const webhookSignature=req.get("X-Razorpay-Signature");
 
       //returns a boolean value
     const isvalid=validateWebhookSignature(
