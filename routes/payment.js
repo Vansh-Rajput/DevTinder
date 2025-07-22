@@ -70,14 +70,14 @@ console.log(req.body.payload.payment.entity);
    // update the user as premium...
    // return success response to razorpay by status(200)
 
-   const paymentdetails=req.body.payload.payment.entity; // this contains all info about our payment, inbuilt object
+   const paymentdetails=req.body.payload.payment.entity; // this contains all info about our payment, inbuilt object of razorpay
    const doc=await razormodel.findOne({orderId:paymentdetails?.order_id});
    doc.status=paymentdetails?.status;
    await doc.save(); 
 
 
    //now in User, assign premium:true for the user,
- const user=await User.findByIdAndUpdate(paymentdetails?.userId,{ispremium:true},{new:true});
+ const user=await User.findByIdAndUpdate(paymentdetails?.notes?.user,{ispremium:true},{new:true});
  await user.save();
 
 
