@@ -12,6 +12,9 @@ paymentroute.post("/payment/create",Auth,async(req,res)=>{
      
      const {email,_id,first_name,last_name}=req.detail;   
 
+
+// these would be visible on big payload object, add fields inside notes and the ones given here ONLY,
+// dont add new field outside notes,... for rest fields like receipt,currency, assign them yourself
 const order= await instance.orders.create({
 amount: 50000,
 currency: "INR",
@@ -48,13 +51,13 @@ res.json({saved,key_id:process.env.RAZORPAY_KEY_ID});
 })
 
 
-//TO CHECK THIS FEATURE, USE PORDUCTION, not localhost
+//TO CHECK THIS FEATURE, USE PRODUCTION, not localhost
 
 //‼️WEBHOOK VALIDATION -- we used /api/ in webhook path already to take care of production as it contains /api
 paymentroute.post("/payment/webhook",async(req,res)=>{   // ‼️ dont use Auth here
                              
     try{
-console.log(req.body.payload.payment.entity);
+
       const webhookSignature=req.get("X-Razorpay-Signature");
 
       //returns a boolean value
@@ -70,7 +73,10 @@ console.log(req.body.payload.payment.entity);
    // update the user as premium...
    // return success response to razorpay by status(200)
 
+
+  // https://razorpay.com/docs/webhooks/payloads/payments/   check the object here
    const paymentdetails=req.body.payload.payment.entity; // this contains all info about our payment, inbuilt object of razorpay
+
    const doc=await razormodel.findOne({orderId:paymentdetails?.order_id});
    doc.status=paymentdetails?.status;
    await doc.save(); 
@@ -79,6 +85,7 @@ console.log(req.body.payload.payment.entity);
    //now in User, assign premium:true for the user,
  const user=await User.findByIdAndUpdate(paymentdetails?.notes?.user,{ispremium:true},{new:true});
  await user.save();
+
 
 
    // these were the 2 events setup by us for webhook
@@ -99,5 +106,13 @@ console.log(req.body.payload.payment.entity);
 })
 
 
+paymentroute.post("/payment/verify",Auth,async(req,res)=>{
+   
+ const userdata=req.detail;
+ if(userdata?.ispremium)
+  res.send({check:true});
+else
+  res.send({check:false});
+})
 
 module.exports={paymentroute}
