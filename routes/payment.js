@@ -54,7 +54,7 @@ res.json({saved,key_id:process.env.RAZORPAY_KEY_ID});
 paymentroute.post("/payment/webhook",async(req,res)=>{   // ‼️ dont use Auth here
                              
     try{
-console.log("webhook called");
+console.log(req.body.payload.payment.entity);
       const webhookSignature=req.get("X-Razorpay-Signature");
 
       //returns a boolean value
@@ -71,7 +71,7 @@ console.log("webhook called");
    // return success response to razorpay by status(200)
 
    const paymentdetails=req.body.payload.payment.entity; // this contains all info about our payment, inbuilt object
-   const doc=await payment.findOne({orderId:paymentdetails?.order_id});
+   const doc=await razormodel.findOne({orderId:paymentdetails?.order_id});
    doc.status=paymentdetails?.status;
    await doc.save(); 
 
