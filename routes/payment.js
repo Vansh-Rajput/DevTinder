@@ -25,7 +25,7 @@ lastname:last_name
 })
 
 //save payment details to DB
-const payment=new razormodel({
+const paymentobj=new razormodel({
   userId:req.detail._id,
   orderId:order.id,
   status:order.status,
@@ -35,7 +35,7 @@ const payment=new razormodel({
   notes:order.notes
 })
 
-const saved=await payment.save();
+const saved=await paymentobj.save();
 
 //return back the details to frontend in form of json...
 res.json({saved,key_id:process.env.RAZORPAY_KEY_ID});
@@ -54,7 +54,7 @@ res.json({saved,key_id:process.env.RAZORPAY_KEY_ID});
 paymentroute.post("/payment/webhook",async(req,res)=>{   // ‼️ dont use Auth here
                              
     try{
-
+console.log("webhook called");
       const webhookSignature=req.get("X-Razorpay-Signature");
 
       //returns a boolean value
