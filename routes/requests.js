@@ -32,13 +32,36 @@ requestroute.post('/request/send/:status/:touserId',Auth,async(req,res,next)=>{
         throw new Error("connection already exists")
  
 
+      
+
+     const loggeduser=await User.findOne({_id:fromuser});
+     const today=new Date()?.toDateString();                // SUN july 27 2025 format by .toDateString
+     const lastdate=loggeduser?.lastswiped?.toDateString();
+
+     //if swipe made on same day.....
+     if(today==lastdate){
+     if(loggeduser.swipecount>=2 && !(loggeduser.ispremium)){
+      return res.status(200).json({message:false});
+     }
+      loggeduser.swipecount+=1;
+    }
+     
+    //if swipe made on another day, then make sure to reset count...
+    else{
+        loggeduser.swipecount=1;
+    }
+   loggeduser.lastswiped=new Date();
+
+await loggeduser.save();
+
+
     const data=new connection_model({
         fromuserId:fromuser,touserId:touser,status:state
     })
 
     await data.save();
 
-    res.send('connection '+state);
+  return res.status(200).json({message:true});
 }
 
 catch(err){
@@ -76,6 +99,37 @@ await connection_model.findByIdAndUpdate(reqId,{status:req.params.status},{new:t
       res.status(401).send("Error : " + err.message);
     }
 })
+
+
+
+requestroute.post('/request/swipeundo',Auth,async(req,res,next)=>{
+    try{
+        const loggedin=req.detail._id;
+
+    // -1 tells sort in decending order of created, means newest first, then store that doc in lastswipe...
+
+        const lastswipe=await connection_model.findOne({fromuserId:loggedin,
+         status:{$in:["ignored","interested"]}
+        }).sort({createdAt:-1}).limit(1);  
+
+        if(!lastswipe)
+        return res.status(200).json({ message:false });
+
+
+        const user=await User.findOne({_id:loggedin});
+        user.swipecount-=1;
+        await user.save();
+
+        await connection_model.findByIdAndDelete({_id:lastswipe?._id});
+        res.json({message:true})
+
+    }
+
+    catch(err){
+      res.status(401).send("Error : Some Problem occured");
+    }
+})
+
 
 module.exports={
     requestroute

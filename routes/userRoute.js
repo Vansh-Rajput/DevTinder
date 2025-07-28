@@ -97,7 +97,7 @@ userroute.get('/user/feed',Auth,async(req,res,next)=>{
       {_id:{$nin : Array.from(hidedata)}},  //converting to array finally for comparing
       {_id:{$ne : loggedin._id}}
       ]
-    }).select("first_name last_name age gender photourl about").skip(skipit).limit(limit);
+    }).sort({ispremium:1}).select("first_name last_name age photourl about ispremium").skip(skipit).limit(limit);
 
        res.send(final)
 

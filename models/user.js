@@ -43,6 +43,14 @@ const userschema=mongoose.Schema({
     ispremium:{
      type:Boolean,
      default:"false"
+    },
+    lastswiped:{
+        type:Date,
+        default:null
+    },
+    swipecount:{
+      type:Number,
+      default:0
     }
 },{timestamps:true});
 
