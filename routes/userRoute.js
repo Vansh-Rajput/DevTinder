@@ -91,15 +91,36 @@ userroute.get('/user/feed',Auth,async(req,res,next)=>{
       hidedata.add(val.touserId);
     });
  
-    //
-    const final=await User.find({
+    
+    const homefeed=await User.find({
       $and:[
       {_id:{$nin : Array.from(hidedata)}},  //converting to array finally for comparing
       {_id:{$ne : loggedin._id}}
       ]
-    }).sort({ispremium:1}).select("first_name last_name age photourl about ispremium").skip(skipit).limit(limit);
+    }).select("first_name last_name age photourl about ispremium skills").skip(skipit).limit(limit);
 
-       res.send(final)
+
+
+
+    const final=homefeed?.map((obj)=>{
+     let count=0;
+     loggedin?.skills?.forEach((skill)=>{
+       if(obj?.skills?.includes(skill))
+        count++;
+     })
+
+     const score=100*(count/Math.max(loggedin?.skills?.length,obj?.skills?.length,1));
+     return {...obj.toObject(),score};    //else it will return mongoose object not JS, so use .toobject.....
+    //  { ...obj }, you only get the shallow properties, not the actual data fields like first_name, email, 
+    // etc. — those are nested or hidden behind Mongoose's prototype system.
+    
+    })
+
+    final.sort((a,b)=>a.score-b.score);
+console.log(final)
+       res.send(final);
+
+
 
   }
 
@@ -136,6 +157,12 @@ userroute.get("/main/chat/:userid",Auth,async(req,res)=>{
     catch(err){
 
     }
+})
+
+
+userroute.post("user/sort",Auth,async(req,res)=>{
+
+  
 })
 
 module.exports={

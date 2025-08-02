@@ -26,7 +26,7 @@ const validatesignup=(req)=>{
 const isvalid=(data)=>{
    
     console.log(data);
-    const allowedchange=["first_name","last_name","age","photourl","gender","about"];
+    const allowedchange=["first_name","last_name","age","photourl","gender","about","skills"];
 
    const validkey= Object.keys(data).every((val)=>allowedchange.includes(val));  // .every gives false and stop checking if 1 of them gives false
  if(!validkey)

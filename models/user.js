@@ -51,7 +51,12 @@ const userschema=mongoose.Schema({
     swipecount:{
       type:Number,
       default:0
+    },
+    skills:{
+     type:[String],
+     default:[]
     }
+
 },{timestamps:true});
 
 
