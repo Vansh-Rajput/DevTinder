@@ -33,8 +33,10 @@ io.on("connection",(socket)=>{
          
    const roomid=[targetid,userid].sort().join('_');
    const other=await User.findOne({_id:userid});
+
+   const newMsg = chat.messages[chat.messages.length - 1];
  
-     io.to(roomid).emit("msg received",{firstname,userid,text,photourl:other?.photourl}) //means send msg to all sockets in room, now 
+     io.to(roomid).emit("msg received",{firstname,userid,text,photourl:other?.photourl,createdAt:newMsg?.createdAt}) //means send msg to all sockets in room, now 
                                        // its choice of user to receive them at frontend using "msg rec handler"
      });
 
