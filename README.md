@@ -1,3 +1,13 @@
+
+# About DevTinder
+- DevTinder is a full-stack web application that connects developers based on shared interests, skills, and projects—similar to how Tinder matches users.
+
+- It features user authentication, profile creation, skill-based search, and real-time chat using React, Redux, Node.js, Express, MongoDB, and Socket.IO.
+
+- The app allows developers to swipe through profiles, send connection requests, and collaborate on ideas instantly.
+
+
+
 # Devtinder API's
 
 -dividing our apis into routers using expressRouter, putting all the apis together is nota best practise
