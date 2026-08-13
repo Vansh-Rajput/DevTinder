@@ -6,7 +6,7 @@ const initialisesocket=(server)=>{
 
 const io=socket(server,{
 cors:{
-    origin:["http://localhost:5173","dev-tinder-ui-nine.vercel.app"]   // include your vercel url....
+    origin:["http://localhost:5173","https://dev-tinder-ui-nine.vercel.app"]   // include your vercel url....
 }
 })
 io.on("connection",(socket)=>{

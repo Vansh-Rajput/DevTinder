@@ -40,7 +40,7 @@ app.use(cookieParser());
 app.use(cors({
     origin:[
         "http://localhost:5173",
-        "dev-tinder-ui-nine.vercel.app"    //add vercel url
+        "https://dev-tinder-ui-nine.vercel.app"    //add vercel url
     ],
     credentials:true
 }))
