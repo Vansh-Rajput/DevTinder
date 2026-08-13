@@ -27,7 +27,11 @@ authroute.post('/signup',async(req,res,next)=>{
     const info=await User.findOne({email:email});
 
     const jwttoken= await info.getjwt();   //imp to take care of cookies in signup just like login
-    res.cookie("token",jwttoken); 
+    res.cookie("token",jwttoken,{
+    httpOnly: true,
+    secure: true,
+    sameSite: "none"
+}); 
     res.send(info)
 
         }
@@ -53,7 +57,11 @@ authroute.post('/login',async(req,res,next)=>{
             throw new Error('please use correct password')
     
         const jwttoken= await info.getjwt();   //creating jwt token throug schema level methods
-        res.cookie("token",jwttoken);   
+        res.cookie("token",jwttoken,{
+    httpOnly: true,
+    secure: true,
+    sameSite: "none"
+});   
         res.send(info);
     
     }
@@ -66,10 +74,11 @@ authroute.post('/login',async(req,res,next)=>{
 
 
 authroute.post('/logout',Auth,async(req,res,next)=>{
-    res.cookie("token",null,{expires:new Date(Date.now())});  //expires removes completely in postman according to time
+    res.cookie("token",null,{httpOnly: true,
+    secure: true,
+    sameSite: "none",
+    expires:new Date(Date.now())});  //expires removes completely in postman according to time
    res.send('Logged Out !!');
 })
-
-
 
 module.exports={authroute}
