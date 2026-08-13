@@ -59,7 +59,6 @@ const userschema=mongoose.Schema({
 
 },{timestamps:true});
 
-
 // create methods at schema level and use them
 userschema.methods.getjwt=async function(){
     const token=await jwt.sign({_id:this._id},process.env.JWT_SECRET,{expiresIn:"7d"});  

@@ -5,9 +5,7 @@ const { User } = require('../models/user');
 const bcrypt=require('bcrypt');
 const jwt=require("jsonwebtoken");
 
-
 const authroute=express.Router();
-
 
  // POST DATA IN DB dynamically
 authroute.post('/signup',async(req,res,next)=>{

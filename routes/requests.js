@@ -30,8 +30,6 @@ requestroute.post('/request/send/:status/:touserId',Auth,async(req,res,next)=>{
         
       if(exists)
         throw new Error("connection already exists")
- 
-
       
 
      const loggeduser=await User.findOne({_id:fromuser});

@@ -13,8 +13,6 @@ const cors=require('cors');
 const initialisesocket = require('./utils/socket');
 const {paymentroute} = require('../routes/payment');
 
-
-
 //socket and socket.io
 
 const server=http.createServer(app);
@@ -34,7 +32,7 @@ console.log("error in loading database")
 
 //app.use(express.json()) is a built-in middleware function in Express.js.
 //It is used to parse incoming JSON request bodies and makes the parsed data available in req.body.
- app.use(express.json());    
+app.use(express.json());    
 app.use(cookieParser()); 
  
 

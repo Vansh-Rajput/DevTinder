@@ -2,12 +2,11 @@
 // whenever required..
 
 
-
 const jwt=require("jsonwebtoken");
 const { User } = require('../../models/user');
 
 
-const Auth =async(req,res,next)=>{  
+const Auth = async(req,res,next)=>{  
 
     try{
     const {token}=req.cookies;     //get the cookie token, the token of logged-in user will be now visible here, thanks to cookieparser()
@@ -29,7 +28,7 @@ if(!detail)
         
  
 req.detail=detail;   // VERY IMPORTANT!!!! ATTACH TO USE IN app.js '/profile', assigning to normal variables wont work, this is your loggedin user
-
+          
   next();      //make use of next(), if condition satisfied, then only jump to other methods
 
 }

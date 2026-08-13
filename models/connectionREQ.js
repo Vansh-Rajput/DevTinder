@@ -1,7 +1,5 @@
 
 const mongoose=require('mongoose')
-const { User } = require('./user');
-const { Schema } = require('mongoose');
 
 const connectschema=new mongoose.Schema({
    

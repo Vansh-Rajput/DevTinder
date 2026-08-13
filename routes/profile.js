@@ -8,7 +8,6 @@ const jwt=require("jsonwebtoken");
 const { isvalid } = require('../src/utils/validation');
 
 
-
 profileroute.get('/profile/view',Auth,(req,res,next)=>{
     try{ 
     res.send(req.detail)
